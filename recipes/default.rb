@@ -40,10 +40,16 @@ node['ipmi']['users'].each_pair do |id,user|
   end
 end
 
-ipmi_lan '1' do
-  ipaddr node['ipmi']['lan']['ipaddr']
-  netmask node['ipmi']['lan']['netmask']
-  gateway node['ipmi']['lan']['gateway']
-  type node['ipmi']['lan']['type']
-  action [ :modify, :enable ]
+node['ipmi']['lan'].each_pair do |channel,settings|
+  ipmi_lan channel do
+    ipaddr settings['ipaddr']
+    netmask settings['netmask']
+    gateway settings['gateway']
+    type settings['type']
+    if settings['access']
+      action [ :modify, :enable ]
+    else
+      action [ :modify, :disable ]
+    end
+  end
 end
