@@ -22,6 +22,22 @@ package "ipmitool" do
   action :install
 end
 
+kernel_module "ipmi_si" do
+  action :install
+end
+
+kernel_module "ipmi_devintf" do
+  action :install
+end
+
+kernel_module "ipmi_msghandler" do
+  action :install
+end
+
+kernel_module "ipmi_watchdog" do
+  action :install
+end
+
 service "ipmievd" do
   supports :restart => true
   action [ :enable, :start ]
