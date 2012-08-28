@@ -69,3 +69,10 @@ node['ipmi']['lan'].each_pair do |channel,settings|
     end
   end
 end
+
+cookbook_file "#{node[:ohai][:plugin_path]/ipmi.rb" do
+  owner "root"
+  group "root"
+  mode "0644"
+  source "ohai-ipmi.rb"
+end
