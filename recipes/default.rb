@@ -42,30 +42,3 @@ service "ipmievd" do
   supports :restart => true
   action [ :enable, :start ]
 end
-
-node['ipmi']['users'].each_pair do |id,user|
-  ipmi_user id do
-    username user['username']
-    level user['level']
-    password user['password']
-    if user['enable']
-      action [ :modify, :enable ]
-    else
-      action [ :modify, :disable ]
-    end
-  end
-end
-
-node['ipmi']['lan'].each_pair do |channel,settings|
-  ipmi_lan channel do
-    ipaddr settings['ipaddr']
-    netmask settings['netmask']
-    gateway settings['gateway']
-    type settings['type']
-    if settings['access']
-      action [ :modify, :enable ]
-    else
-      action [ :modify, :disable ]
-    end
-  end
-end
