@@ -35,7 +35,7 @@ action :modify do
       not_if "ipmitool lan print 1 | grep 'Subnet Mask' | awk '{print $4'} | grep -q '#{new_resource.netmask}'"
     end
     execute "ipmitool lan set defgw" do
-      command "ipmitool lan set #{new_resource.channel} defgw #{new_resource.gateway}"
+      command "ipmitool lan set #{new_resource.channel} defgw ipaddr #{new_resource.gateway}"
       only_if { new_resource.gateway }
       not_if "ipmitool lan print 1 | grep 'Default Gateway IP' | awk '{print $5'} | grep -q '#{new_resource.gateway}'"
     end
