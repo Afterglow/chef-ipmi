@@ -18,8 +18,11 @@
 # limitations under the License.
 #
 
-package "ipmitool" do
-  action :install
+case platform
+when "debian", "ubuntu", "freebsd"
+  package "ipmitool" do
+    action :install
+  end
 end
 
 kernel_module "ipmi_si" do
