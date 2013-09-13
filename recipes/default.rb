@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-case platform
+case node[:platform]
 when "debian", "ubuntu", "freebsd"
   package "ipmitool" do
     action :install
