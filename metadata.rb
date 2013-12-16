@@ -1,3 +1,4 @@
+name             'ipmi'
 maintainer       'Paul Thomas'
 maintainer_email 'paul+github@paulthomas.eu'
 license          'Apache 2.0'
