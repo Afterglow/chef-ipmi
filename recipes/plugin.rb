@@ -19,15 +19,15 @@
 #
 
 case node[:platform]
-when "debian", "ubuntu", "freebsd"
-  package "ipmitool" do
+when 'debian', 'ubuntu', 'freebsd'
+  package 'ipmitool' do
     action :install
   end
 end
 
 cookbook_file "#{node[:ohai][:plugin_path]}/ipmi.rb" do
-  owner "root"
-  group "root"
-  mode "0644"
-  source "ohai-ipmi.rb"
+  owner 'root'
+  group 'root'
+  mode '0644'
+  source 'ohai-ipmi.rb'
 end

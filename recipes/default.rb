@@ -19,36 +19,36 @@
 #
 
 case node[:platform]
-when "debian", "ubuntu", "freebsd"
-  package "ipmitool" do
+when 'debian', 'ubuntu', 'freebsd'
+  package 'ipmitool' do
     action :install
   end
 end
 
-kernel_module "ipmi_si" do
+kernel_module 'ipmi_si' do
   action :install
 end
 
-kernel_module "ipmi_devintf" do
+kernel_module 'ipmi_devintf' do
   action :install
 end
 
-kernel_module "ipmi_msghandler" do
+kernel_module 'ipmi_msghandler' do
   action :install
 end
 
-kernel_module "ipmi_watchdog" do
+kernel_module 'ipmi_watchdog' do
   action :install
 end
 
-service "ipmievd" do
+service 'ipmievd' do
   supports :restart => true
-  action [ :enable, :start ]
+  action [:enable, :start]
 end
 
 cookbook_file "#{node[:ohai][:plugin_path]}/ipmi.rb" do
-  owner "root"
-  group "root"
-  mode "0644"
-  source "ohai-ipmi.rb"
+  owner 'root'
+  group 'root'
+  mode '0644'
+  source 'ohai-ipmi.rb'
 end
