@@ -19,28 +19,28 @@
 #
 
 action :modify do
-  execute "ipmitool set user name" do
+  execute 'ipmitool set user name' do
     command "ipmitool user set name #{new_resource.userid} #{new_resource.username}"
     only_if { new_resource.username }
   end
-  execute "ipmitool set user password" do
+  execute 'ipmitool set user password' do
     command "ipmitool user set password #{new_resource.userid} #{new_resource.password}"
     only_if { new_resource.password }
   end
-  execute "ipmitool user priv" do
+  execute 'ipmitool user priv' do
     command "ipmitool user priv #{new_resource.userid} #{new_resource.level} #{new_resource.channel}"
     only_if { new_resource.level }
   end
 end
 
 action :enable do
-  execute "ipmitool user enable" do
+  execute 'ipmitool user enable' do
     command "ipmitool user enable #{new_resource.userid}"
   end
 end
 
 action :disable do
-  execute "ipmitool user disable" do
+  execute 'ipmitool user disable' do
     command "ipmitool user disable #{new_resource.userid}"
   end
 end

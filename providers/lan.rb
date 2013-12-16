@@ -20,27 +20,27 @@
 
 action :modify do
   if new_resource.type == 'static'
-    execute "ipmitool lan set ipsrc static" do
+    execute 'ipmitool lan set ipsrc static' do
       command "ipmitool lan set #{new_resource.channel} ipsrc static"
       not_if "ipmitool lan print 1 | grep 'IP Address Source' | awk '{print $5}' | grep -q 'Static'"
     end
-    execute "ipmitool lan set ipaddr" do
+    execute 'ipmitool lan set ipaddr' do
       command "ipmitool lan set #{new_resource.channel} ipaddr #{new_resource.ipaddr}"
       only_if { new_resource.ipaddr }
       not_if "ipmitool lan print 1 | grep 'IP Address' | awk '{print $4'} | grep -q '#{new_resource.ipaddr}'"
     end
-    execute "ipmitool lan set netmask" do
+    execute 'ipmitool lan set netmask' do
       command "ipmitool lan set #{new_resource.channel} netmask #{new_resource.netmask}"
       only_if { new_resource.netmask }
       not_if "ipmitool lan print 1 | grep 'Subnet Mask' | awk '{print $4'} | grep -q '#{new_resource.netmask}'"
     end
-    execute "ipmitool lan set defgw" do
+    execute 'ipmitool lan set defgw' do
       command "ipmitool lan set #{new_resource.channel} defgw ipaddr #{new_resource.gateway}"
       only_if { new_resource.gateway }
       not_if "ipmitool lan print 1 | grep 'Default Gateway IP' | awk '{print $5'} | grep -q '#{new_resource.gateway}'"
     end
   elsif new_resource.type == 'dhcp'
-    execute "ipmitool lan set ipsrc dhcp" do
+    execute 'ipmitool lan set ipsrc dhcp' do
       command "ipmitool lan set #{new_resource.channel} ipsrc dhcp"
       not_if "ipmitool lan print 1 | grep 'IP Address Source' | awk '{print $5}' | grep -q 'DHCP'"
     end
@@ -48,13 +48,13 @@ action :modify do
 end
 
 action :enable do
-  execute "ipmitool lan set access on" do
+  execute 'ipmitool lan set access on' do
     command "ipmitool lan set #{new_resource.channel} access on"
   end
 end
 
 action :disable do
-  execute "ipmitool lan set access off" do
+  execute 'ipmitool lan set access off' do
     command "ipmitool lan set #{new_resource.channel} access off"
   end
 end
