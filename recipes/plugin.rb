@@ -18,8 +18,8 @@
 # limitations under the License.
 #
 
-case node[:platform]
-when 'debian', 'ubuntu', 'freebsd'
+case node['platform_family']
+when 'debian', 'freebsd'
   package 'ipmitool' do
     action :install
   end
