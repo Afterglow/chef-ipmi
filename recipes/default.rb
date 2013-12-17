@@ -25,20 +25,10 @@ when 'debian', 'freebsd'
   end
 end
 
-kernel_module 'ipmi_si' do
-  action :install
-end
-
-kernel_module 'ipmi_devintf' do
-  action :install
-end
-
-kernel_module 'ipmi_msghandler' do
-  action :install
-end
-
-kernel_module 'ipmi_watchdog' do
-  action :install
+node['ipmi']['kernel_modules'].each do |kmodule|
+  kernel_module kmodule do
+    action :install
+  end
 end
 
 service 'ipmievd' do
