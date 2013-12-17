@@ -36,7 +36,7 @@ service 'ipmievd' do
   action [:enable, :start]
 end
 
-cookbook_file "#{node[:ohai][:plugin_path]}/ipmi.rb" do
+cookbook_file "#{node['ohai']['plugin_path']}/ipmi.rb" do
   owner 'root'
   group 'root'
   mode '0644'
