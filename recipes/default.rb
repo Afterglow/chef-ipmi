@@ -32,7 +32,7 @@ node['ipmi']['kernel_modules'].each do |kmodule|
 end
 
 service 'ipmievd' do
-  supports :restart => true
+  supports :status => true, :restart => true
   action [:enable, :start]
 end
 
