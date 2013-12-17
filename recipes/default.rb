@@ -25,28 +25,18 @@ when 'debian', 'freebsd'
   end
 end
 
-kernel_module 'ipmi_si' do
-  action :install
-end
-
-kernel_module 'ipmi_devintf' do
-  action :install
-end
-
-kernel_module 'ipmi_msghandler' do
-  action :install
-end
-
-kernel_module 'ipmi_watchdog' do
-  action :install
+node['ipmi']['kernel_modules'].each do |kmodule|
+  kernel_module kmodule do
+    action :install
+  end
 end
 
 service 'ipmievd' do
-  supports :restart => true
+  supports :status => true, :restart => true
   action [:enable, :start]
 end
 
-cookbook_file "#{node[:ohai][:plugin_path]}/ipmi.rb" do
+cookbook_file "#{node['ohai']['plugin_path']}/ipmi.rb" do
   owner 'root'
   group 'root'
   mode '0644'
