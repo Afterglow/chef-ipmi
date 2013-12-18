@@ -19,7 +19,7 @@
 #
 
 case node['platform_family']
-when 'debian', 'freebsd'
+when 'debian', 'freebsd', 'rhel'
   package 'ipmitool' do
     action :install
   end
