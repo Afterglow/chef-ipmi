@@ -67,5 +67,5 @@ begin
 
 
 rescue
-  Chef::Log.warn "Ohai ipmi plugin failed with: '#{e}'"
+  Chef::Log.warn "Ohai ipmi plugin failed to run"
 end
