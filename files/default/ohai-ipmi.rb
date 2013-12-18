@@ -3,6 +3,7 @@
 # Plugin:: ipmi
 #
 # Copyright 2012, John Dewey
+# Copyright 2013, Limelight Networks, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,14 +22,50 @@
 provides 'ipmi'
 
 begin
+
+  # gather IPMI interface information
   cmd = 'ipmitool lan print'
   status, stdout, stderr = run_command(:command => cmd)
 
-  stdout =~ /IP Address\s+: ([0-9.]+).*MAC Address\s+: ([a-z0-9:]+)/m
+  if status == 0
+    ipmi Mash.new
+    stdout.each_line do |line|
+      case line
+      when /IP Address\s+: ([0-9.]+)/
+        ipmi[:address] = $1
+      when /Default Gateway IP\s+: ([0-9.]+)/
+        ipmi[:gateway] = $1
+      when /Subnet Mask\s+: ([0-9.]+)/
+        ipmi[:mask] = $1
+      when /MAC Address\s+: ([a-z0-9:]+)/
+        ipmi[:mac_address] = $1
+      when /IP Address Source\s+: (.+)/
+        ipmi[:ip_source] = $1
+      end
+    end
+  end
 
-  ipmi Mash.new
-  ipmi[:address] = Regexp.last_match[1]
-  ipmi[:mac_address] = Regexp.last_match[2]
-rescue => e
+  # gather IPMI System Event Log information
+  cmd = 'ipmitool sel info'
+  status, stdout, stderr = run_command(:command => cmd)
+
+  if status == 0
+    ipmi[:sel] = Mash.new
+    stdout.each_line do |line|
+      case line
+      when /^Version\s+: (\d+(\.\d+)+)/
+        ipmi[:sel][:version] = $1
+      when /^Entries\s+: (.+)/
+        ipmi[:sel][:entries] = $1.to_i
+      when /^Percent Used\s+: ([0-9]+)/
+        ipmi[:sel][:percent_used] = $1.to_i
+      when /^Overflow\s+: ([a-z]+)/
+        ipmi[:sel][:overflow] = $1 == "true" ? true : false
+      end
+    end
+  end
+
+
+rescue
   Chef::Log.warn "Ohai ipmi plugin failed with: '#{e}'"
 end
