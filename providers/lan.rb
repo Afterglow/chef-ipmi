@@ -18,6 +18,10 @@
 # limitations under the License.
 #
 
+def whyrun_supported?
+  true
+end
+
 action :modify do
   if new_resource.type == 'static'
     execute 'ipmitool lan set ipsrc static' do

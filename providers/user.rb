@@ -18,6 +18,10 @@
 # limitations under the License.
 #
 
+def whyrun_supported?
+  true
+end
+
 action :modify do
   execute 'ipmitool set user name' do
     command "ipmitool user set name #{new_resource.userid} #{new_resource.username}"

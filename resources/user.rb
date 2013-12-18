@@ -1,5 +1,7 @@
 actions :modify, :enable, :disable
 
+default_action :enable
+
 attribute :username, :kind_of => String
 attribute :password, :kind_of => String
 # 1 - Callback, 2 - User, 3 - Operator, 4- Administrator
