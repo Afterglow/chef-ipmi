@@ -1,10 +1,19 @@
 Description
 ===========
-Install ipmitool and allow basic configuration of IPMI users and LAN settings through included LWRP
+Installs ipmitool and allows for basic configuration of IPMI users and LAN settings through included LWRP.  Also includes an IPMI Ohai plugin that adds IPMI information to your node object.
 
 Requirements
 ============
-A compatible IPMI interface such as a Dell DRAC, Supermicro BMC or HP iLO (only actually tested in Dell by author)
+A compatible IPMI interface such as a Dell DRAC, Supermicro BMC or HP iLO (only actually tested on Dell and Supermicro)
+
+### Chef
+Chef version 0.10.10+ and Ohai 0.6.12+ are required.
+
+### Platform
+* Debian 6
+* Ubuntu 10.04, 12.04
+* Red Hat Enterprise Linux (CentOS/Scientific/Oracle) 5.X, 6.X
+* FreeBSD
 
 Attributes
 ==========
