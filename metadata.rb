@@ -6,6 +6,6 @@ description      'Installs/Configures ipmi'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.0.5'
 
-%w{debian ubuntu freebsd}.each do |os|
+%w{debian ubuntu freebsd redhat freebsd oracle scientific}.each do |os|
   supports os
 end
