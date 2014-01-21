@@ -32,15 +32,15 @@ begin
     stdout.each_line do |line|
       case line
       when /IP Address\s+: ([0-9.]+)/
-        ipmi[:address] = $1
+        ipmi[:address] = Regexp.last_match[1]
       when /Default Gateway IP\s+: ([0-9.]+)/
-        ipmi[:gateway] = $1
+        ipmi[:gateway] = Regexp.last_match[1]
       when /Subnet Mask\s+: ([0-9.]+)/
-        ipmi[:mask] = $1
+        ipmi[:mask] = Regexp.last_match[1]
       when /MAC Address\s+: ([a-z0-9:]+)/
-        ipmi[:mac_address] = $1
+        ipmi[:mac_address] = Regexp.last_match[1]
       when /IP Address Source\s+: (.+)/
-        ipmi[:ip_source] = $1
+        ipmi[:ip_source] = Regexp.last_match[1]
       end
     end
   end
@@ -54,18 +54,17 @@ begin
     stdout.each_line do |line|
       case line
       when /^Version\s+: (\d+(\.\d+)+)/
-        ipmi[:sel][:version] = $1
+        ipmi[:sel][:version] = Regexp.last_match[1]
       when /^Entries\s+: (.+)/
-        ipmi[:sel][:entries] = $1.to_i
+        ipmi[:sel][:entries] = Regexp.last_match[1].to_i
       when /^Percent Used\s+: ([0-9]+)/
-        ipmi[:sel][:percent_used] = $1.to_i
+        ipmi[:sel][:percent_used] = Regexp.last_match[1].to_i
       when /^Overflow\s+: ([a-z]+)/
-        ipmi[:sel][:overflow] = $1 == "true" ? true : false
+        ipmi[:sel][:overflow] = Regexp.last_match[1] == 'true' ? true : false
       end
     end
   end
 
-
 rescue
-  Chef::Log.warn "Ohai ipmi plugin failed to run"
+  Chef::Log.warn 'Ohai ipmi plugin failed to run'
 end
