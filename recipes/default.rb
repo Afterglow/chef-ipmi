@@ -25,7 +25,7 @@ when 'debian', 'freebsd', 'rhel'
   end
 end
 
-node['ipmi']['kernel_modules'].each do |kmodule|
+node['ipmi_cookbook']['kernel_modules'].each do |kmodule|
   kernel_module kmodule do
     action :install
   end
