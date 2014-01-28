@@ -65,6 +65,28 @@ begin
     end
   end
 
+  # gather IPMI Management Controller information
+  cmd = 'ipmitool mc info'
+  status, stdout, stderr = run_command(:command => cmd)
+
+  if status == 0
+    ipmi[:mc] = Mash.new
+    stdout.each_line do |line|
+      case line
+      when /^Device Revision\s+: (.+)/
+        ipmi[:mc][:device_revision] = Regexp.last_match[1]
+      when /^Firmware Revision\s+: (.+)/
+        ipmi[:mc][:firmware_revision] = Regexp.last_match[1]
+      when /^IPMI Version\s+: (.+)/
+        ipmi[:mc][:ipmi_version] = Regexp.last_match[1]
+      when /^Manufacturer ID\s+: (.+)/
+        ipmi[:mc][:manufacturer_id] = Regexp.last_match[1]
+      when /^Product ID\s+: (.+)/
+        ipmi[:mc][:product_id] = Regexp.last_match[1]
+      end
+    end
+  end
+
 rescue
   Chef::Log.warn 'Ohai ipmi plugin failed to run'
 end
