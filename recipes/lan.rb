@@ -1,6 +1,6 @@
 include_recipe 'ipmi'
 
-node['ipmi']['lan'].each_pair do |channel, settings|
+node['ipmi_cookbook']['lan'].each_pair do |channel, settings|
   ipmi_lan channel.to_i do
     ipaddr settings['ipaddr']
     netmask settings['netmask']
