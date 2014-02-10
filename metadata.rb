@@ -4,7 +4,7 @@ maintainer_email 'paul+github@paulthomas.eu'
 license          'Apache 2.0'
 description      'Installs/Configures ipmi'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.0.6'
+version          '0.0.7'
 
 %w{debian ubuntu freebsd redhat oracle scientific}.each do |os|
   supports os
