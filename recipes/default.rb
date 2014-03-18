@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+include_recipe 'ohai'
+
 case node['platform_family']
 when 'debian', 'freebsd', 'rhel'
   package 'ipmitool' do

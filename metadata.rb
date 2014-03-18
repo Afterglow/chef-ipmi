@@ -9,3 +9,5 @@ version          '0.0.7'
 %w{debian ubuntu freebsd redhat oracle scientific}.each do |os|
   supports os
 end
+
+depends 'ohai'
