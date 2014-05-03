@@ -7,7 +7,7 @@ Requirements
 A compatible IPMI interface such as a Dell DRAC, Supermicro BMC or HP iLO (only actually tested on Dell and Supermicro)
 
 ### Chef
-Chef version 0.10.10+ and Ohai 0.6.12+ are required.
+Chef version 0.10.10+ and Ohai 7.0.0+ are required.  Ohai 7 originally shipped with Chef 11.12.0 if you use Omnibus installers
 
 ### Platform
 * Debian 6
