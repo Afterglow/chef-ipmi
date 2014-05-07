@@ -26,12 +26,11 @@ Ohai.plugin(:Ipmi) do
     begin
 
       # gather IPMI interface information
-      cmd = 'ipmitool lan print'
-      status, stdout, stderr = run_command(:command => cmd)
+      so = shell_out('ipmitool lan print')
 
-      if status == 0
+      if so.exitstatus == 0
         ipmi Mash.new
-        stdout.each_line do |line|
+        so.stdout.lines do |line|
           case line
           when /IP Address\s+: ([0-9.]+)/
             ipmi[:address] = Regexp.last_match[1]
@@ -48,12 +47,11 @@ Ohai.plugin(:Ipmi) do
       end
 
       # gather IPMI System Event Log information
-      cmd = 'ipmitool sel info'
-      status, stdout, stderr = run_command(:command => cmd)
+      so = shell_out('ipmitool sel info')
 
-      if status == 0
+      if so.exitstatus == 0
         ipmi[:sel] = Mash.new
-        stdout.each_line do |line|
+        so.stdout.lines do |line|
           case line
           when /^Version\s+: (\d+(\.\d+)+)/
             ipmi[:sel][:version] = Regexp.last_match[1]
@@ -68,12 +66,11 @@ Ohai.plugin(:Ipmi) do
       end
 
       # gather IPMI Management Controller information
-      cmd = 'ipmitool mc info'
-      status, stdout, stderr = run_command(:command => cmd)
+      so = shell_out('ipmitool mc info')
 
-      if status == 0
+      if so.exitstatus == 0
         ipmi[:mc] = Mash.new
-        stdout.each_line do |line|
+        so.stdout.lines do |line|
           case line
           when /^Device Revision\s+: (.+)/
             ipmi[:mc][:device_revision] = Regexp.last_match[1]
