@@ -20,10 +20,11 @@
 
 include_recipe 'ohai'
 
+# install the appropriate ipmi packages per platform
 case node['platform_family']
 when 'debian', 'freebsd', 'rhel'
-  package 'ipmitool' do
-    action :install
+  node['ipmi_cookbook']['packages'].each do |pkg|
+    package pkg
   end
 end
 
