@@ -3,7 +3,12 @@
 # Attributes:: default
 #
 
-default['ipmi_cookbook']['packages']  = %w(ipmitool openipmi freeipmi-tools)
+case node['platform_family']
+when 'rhel'
+  default['ipmi_cookbook']['packages']  = %w(OpenIPMI-tools freeipmi)
+when 'debian'
+  default['ipmi_cookbook']['packages']  = %w(ipmitool openipmi freeipmi-tools)
+end
 
 default['ipmi_cookbook']['kernel_modules'] = %w(ipmi_si ipmi_devintf ipmi_msghandler ipmi_watchdog)
 
