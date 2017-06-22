@@ -29,5 +29,5 @@ cookbook_file "#{node['ohai']['plugin_path']}/ipmi.rb" do
   owner 'root'
   group 'root'
   mode '0644'
-  source 'ohai-ipmi.rb'
+  source 'ohai_ipmi.rb'
 end
