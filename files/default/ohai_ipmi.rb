@@ -18,6 +18,10 @@
 #
 # Acquired from: https://bitbucket.org/retr0h/ohai.git
 
+def string_to_bool(bool_string)
+  !(bool_string =~ /^(?i)true$/).nil?
+end
+
 Ohai.plugin(:Ipmi) do
   provides 'ipmi'
 
@@ -112,11 +116,10 @@ Ohai.plugin(:Ipmi) do
         ipmi[:channels][channel_id][:users] = Mash.new
         users_so.stdout.lines do |users_line|
           if users_line =~ /^\s*(\d+)\s+(\w+)\s+(true|false)\s+(true|false)\s+(true|false)\s+(?i)(callback|user|operator|administrator)$/
-            # ipmi[:channels][channel_id][:users][Regexp.last_match[1]] = Mash.new
             ipmi[:channels][channel_id][:users][Regexp.last_match[1]] = { name: Regexp.last_match[2],
-                                                                          callin: Regexp.last_match[3],
-                                                                          link_auth: Regexp.last_match[4],
-                                                                          ipmi_msg: Regexp.last_match[5],
+                                                                          callin: string_to_bool(Regexp.last_match[3]),
+                                                                          link_auth: string_to_bool(Regexp.last_match[4]),
+                                                                          ipmi_msg: string_to_bool(Regexp.last_match[5]),
                                                                           channel_priv: Regexp.last_match[6] }
           end
         end
