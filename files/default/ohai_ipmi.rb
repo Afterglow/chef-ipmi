@@ -18,6 +18,10 @@
 #
 # Acquired from: https://bitbucket.org/retr0h/ohai.git
 
+def string_to_bool(bool_string)
+  !(bool_string =~ /^(?i)true$/).nil?
+end
+
 Ohai.plugin(:Ipmi) do
   provides 'ipmi'
 
@@ -85,6 +89,41 @@ Ohai.plugin(:Ipmi) do
         end
       end
 
+      (0..15).each do |channel_id|
+        so = shell_out("ipmitool channel info #{channel_id}")
+
+        next unless so.exitstatus == 0
+        ipmi[:channels] ||= Mash.new
+        ipmi[:channels][channel_id] = Mash.new
+        so.stdout.lines do |line|
+          case line
+          when /^\s*Channel Medium Type\s+: (.+)/
+            ipmi[:channels][channel_id][:medium_type] = Regexp.last_match[1]
+          when /^\s*Channel Protocol Type\s+: (.+)/
+            ipmi[:channels][channel_id][:protocol_type] = Regexp.last_match[1]
+          when /^\s*Session Support\s+: (.+)/
+            ipmi[:channels][channel_id][:session_support] = Regexp.last_match[1]
+          when /^\s*Active Session Count\s+: (.+)/
+            ipmi[:channels][channel_id][:active_session_count] = Regexp.last_match[1]
+          when /^\s*Protocol Vendor ID\s+: (.+)/
+            ipmi[:channels][channel_id][:protocol_vendor_id] = Regexp.last_match[1]
+          end
+        end
+
+        users_so = shell_out("ipmitool user list #{channel_id}")
+
+        next unless users_so.exitstatus == 0
+        ipmi[:channels][channel_id][:users] = Mash.new
+        users_so.stdout.lines do |users_line|
+          if users_line =~ /^\s*(\d+)\s+(\w+)\s+(true|false)\s+(true|false)\s+(true|false)\s+(?i)(callback|user|operator|administrator)$/
+            ipmi[:channels][channel_id][:users][Regexp.last_match[1]] = { name: Regexp.last_match[2],
+                                                                          callin: string_to_bool(Regexp.last_match[3]),
+                                                                          link_auth: string_to_bool(Regexp.last_match[4]),
+                                                                          ipmi_msg: string_to_bool(Regexp.last_match[5]),
+                                                                          channel_priv: Regexp.last_match[6] }
+          end
+        end
+      end
     rescue
       Chef::Log.warn 'Ohai ipmi plugin failed to run'
     end

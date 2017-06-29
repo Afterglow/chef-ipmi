@@ -6,5 +6,4 @@ describe 'ipmi::default' do
     runner.converge 'ipmi::default'
   end
   subject { chef_run }
-
 end
